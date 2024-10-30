@@ -1,3 +1,4 @@
+using Desktop.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,7 @@ namespace Desktop
             InitializeComponent();
         }
 
-        public void RegistrationButton_Click (object sender, RoutedEventArgs e)
+        public void RegistrationButton_Click(object sender, RoutedEventArgs e)
         {
             if (UserName.Text == "Введите имя пользователя" || UserName.Text.Length < 3)
             {
@@ -48,9 +49,20 @@ namespace Desktop
             }
             else
             {
-                MainEmpty mainEmpty = new MainEmpty();
-                mainEmpty.Show();
-                this.Close();
+                bool isRegistered = UserRepository.RegisterUser(UserName.Text, Mail.Text, Password.Password);
+
+                if (isRegistered)
+                {
+                    MainEmpty mainEmpty = new MainEmpty();
+                    mainEmpty.Show();
+                    this.Hide();
+
+                    MessageBox.Show("Регистрация прошла успешно");
+                }
+                else
+                {
+                    MessageBox.Show("Пользователь с таким именем пользователя или email уже существует", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
 
