@@ -25,11 +25,53 @@ namespace Desktop
             InitializeComponent();
         }
 
-        public void RegistrationButton_Click(object sender, RoutedEventArgs e)
+        public void RegistrationButton_Click (object sender, RoutedEventArgs e)
         {
-            //
+            if (UserName.Text == "Введите имя пользователя" || UserName.Text.Length < 3)
+            {
+                MessageBox.Show("Имя пользователя должно содержать не менее трех символов", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+            else if (!CheckEmail())
+            {
+                MessageBox.Show("Почта некорректна", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+            else if (Password.Password != PasswordConfirm.Password)
+            {
+                MessageBox.Show("Пароль и его подтверждение должны совпадать", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+            else if (Password.Password.Length < 6)
+            {
+                MessageBox.Show("Пароль должен состоять не менее чем из шести символов", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else
+            {
+                MainEmpty mainEmpty = new MainEmpty();
+                mainEmpty.Show();
+                this.Close();
+            }
         }
-        
+
+        private bool CheckEmail()
+        {
+            if (Mail.Text == "exam@yandex.ru")
+            {
+                return false;
+            }
+
+            return Regex.IsMatch(Mail.Text, @"^[^@\s]+@[^@\s]+\.[^@\s]+$");
+        }
+
+        private void Input_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.Space)
+            {
+                e.Handled = true;
+            }
+        }
+
         public void BackButton_Click (object sender, RoutedEventArgs e)
         {
             LogIn logIn = new LogIn();
